@@ -11,10 +11,7 @@ namespace U_News.Controllers
 {
     public class UsersController : Controller
     {
-        /// <summary>
-        /// Displays list of publishers from Publishers table
-        /// </summary>
-        /// <returns></returns>
+       
         public List<UserType> GetUserTypes()
         {
             List<UserType> list = new List<UserType>();
@@ -42,15 +39,12 @@ namespace U_News.Controllers
             }
         }
 
-        /// <summary>
-        /// Displays list of status
-        /// </summary>
-        /// <returns></returns>
+    
         public List<SelectListItem> GetStatus()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem() { Text = "Active", Value = "Active" });
-            list.Add(new SelectListItem() { Text = "Inactive", Value = "Inactive" });
+            list.Add(new SelectListItem() { Text = "Student", Value = "Student" });
+            list.Add(new SelectListItem() { Text = "Administrator", Value = "Administrator" });
             list.Add(new SelectListItem() { Text = "Blocked", Value = "Blocked" });
             list.Add(new SelectListItem() { Text = "Archived", Value = "Archived" });
             return list;
@@ -92,9 +86,8 @@ namespace U_News.Controllers
                 using (SqlConnection con = new SqlConnection(Helper.GetConnection()))
                 {
                     con.Open();
-                    string query = @"INSERT INTO users VALUES
-                    (@typeID, @userEmail, @userPassword, @userFirstName,
-                    @userLastName, @userPhone, @userStatus)";
+                    string query = @"INSERT INTO users  
+                                VALUES (@typeID, @userEmail, @userPW, @userFN, @userLN, @userPhone, @userStatus) ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@typeID", record.TypeID);

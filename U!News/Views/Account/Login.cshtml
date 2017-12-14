@@ -9,11 +9,13 @@
 
 @using (Html.BeginForm())
 {
-
+    @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         <hr />
         @Html.Raw(ViewBag.Message)
+
+       
 
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -41,7 +43,11 @@
         </div>
     </div>
 }
+        
+        
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }

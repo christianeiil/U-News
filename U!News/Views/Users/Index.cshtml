@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<U_News.Models.Users>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "List of Users";
 }
 
 <h2>List of Users</h2>
@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Add a Record", "Add")
 </p>
-<table id="tblUsers" class="table table-hover">
+<table id="tblusers" class="table table-hover">
     <thead>
     <th>
         @Html.DisplayNameFor(model => model.ID)
@@ -29,12 +29,14 @@
     <th>
         @Html.DisplayNameFor(model => model.Phone)
     </th>
-  
+
     <th>
         @Html.DisplayNameFor(model => model.CurrentStatus)
     </th>
-    <th></th>
-    </thead>
+   </thead>
+    
+ 
+
     <tbody>
         @foreach (var item in Model)
         {
@@ -57,15 +59,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Phone)
                 </td>
-         
                 <td>
                     @Html.DisplayFor(modelItem => item.CurrentStatus)
                 </td>
                 <td>
-                    <a href="@Url.Action("Details","Users", new { item.ID })" class="btn btn-info btn-xs" title="View details">
+                    <a href="@Url.Action("Details", "Users", new { item.ID })" class="btn btn-info btn-xs" title="View details">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <a href="@Url.Action("Delete","Users", new { item.ID })" class="btn btn-danger btn-xs" title="Remove record"
+                    <a href="@Url.Action("Delete", "Users", new { item.ID })" class="btn btn-danger btn-xs" title="Remove record"
                        onclick='return confirm("Are you sure?");'>
                         <i class="fa fa-trash"></i>
                     </a>
@@ -74,13 +75,3 @@
         }
     </tbody>
 </table>
-<script>
-    $(document).ready(function () {
-        $('#tblUsers').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'print'
-            ]
-        });
-    });
-</script>

@@ -34,7 +34,8 @@ namespace U_News.Controllers
                     using (SqlDataReader data = cmd.ExecuteReader())
                     {
                         if (data.HasRows)
-                        {
+                        { 
+                            
                             while (data.Read())
                             {
                                 Session["userid"] = data["userID"].ToString();
@@ -44,6 +45,7 @@ namespace U_News.Controllers
                         }
                         else
                         {
+                            
                             ViewBag.Message = "<div class='alert alert-danger'>Incorrect email or password.</div>"; // displays error message if credentials are incorrect
                             return View();
                         }
@@ -52,9 +54,38 @@ namespace U_News.Controllers
             }
         }
 
+        public List<UserType> GetUserTypes()
+        {
+            List<UserType> list = new List<UserType>();
+            using (SqlConnection con = new SqlConnection(Helper.GetConnection()))
+            {
+                con.Open();
+                string query = @"SELECT typeID, typeName
+                    FROM types
+                    ORDER BY typeName";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    using (SqlDataReader data = cmd.ExecuteReader())
+                    {
+                        while (data.Read())
+                        {
+                            list.Add(new UserType
+                            {
+                                ID = int.Parse(data["typeID"].ToString()),
+                                Name = data["typeName"].ToString()
+                            });
+                        }
+                        return list;
+                    }
+                }
+            }
+        }
+         
         public ActionResult Register()
         {
-            return View();
+            Users record = new Users();
+            record.Types = GetUserTypes();
+            return View(record);
         }
    
         public static bool IsExisting(string email)
@@ -76,7 +107,9 @@ namespace U_News.Controllers
         {
             if (IsExisting(record.Email))
             {
-                ViewBag.Message = "<div class='alert alert-danger'>Email address already existing.</div>"; 
+ 
+                ViewBag.Message = "<div class='alert alert-danger'>Email address already existing.</div>";
+                record.Types = GetUserTypes();
                 return View(record);
             }
             else
@@ -84,12 +117,11 @@ namespace U_News.Controllers
                 using (SqlConnection con = new SqlConnection(Helper.GetConnection()))
                 {
                     con.Open();
-                    string query = @"INSERT INTO users VALUES
-                    (@typeID, @userEmail, @userPW, @userFN,
-                    @userLN, @userPhone, @userStatus)";
+                    string query = @"INSERT INTO users  
+                            VALUES (@typeID, @userEmail, @userPW, @userFN, @userLN, @userPhone, @userStatus)";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@typeID", 2); // user type personnel
+                        cmd.Parameters.AddWithValue("@typeID", 2); 
                         cmd.Parameters.AddWithValue("@userEmail", record.Email);
                         cmd.Parameters.AddWithValue("@userPW", Helper.Hash(record.Password));
                         cmd.Parameters.AddWithValue("@userFN", record.FN);
@@ -97,7 +129,12 @@ namespace U_News.Controllers
                         cmd.Parameters.AddWithValue("@userPhone", DBNull.Value);
                         cmd.Parameters.AddWithValue("@userStatus", "Pending");
                         cmd.ExecuteNonQuery();
+                        record.Types = GetUserTypes();
+                        return View(record);
+
                         return RedirectToAction("Login");
+
+                        
                     }
                 }
             }
@@ -112,7 +149,7 @@ namespace U_News.Controllers
             {
                 con.Open();
                 string query = @"SELECT userID, userEmail,
-                    userFirstName, userLastName, userPhone
+                    userFN, userLN, userPhone
                     FROM users
                     WHERE userID=@userID AND userStatus!=@userStatus";
                 using (SqlCommand cmd = new SqlCommand(query, con))
