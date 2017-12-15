@@ -1,0 +1,58 @@
+﻿@model IEnumerable<U_News.Models.Announcements>
+
+@{
+    ViewBag.Title = "School Announcements!";
+}
+
+<h2>School Announcements!</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Add")
+</p>
+
+
+<table id="tblAnn"  class="table table-hover">
+    <tr>
+
+       
+        <th>
+            @Html.DisplayNameFor(model => model.AN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Details)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+       
+
+            <td>
+                @Html.DisplayFor(modelItem => item.AN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAdded)
+            </td>
+
+</tr>
+}
+
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#tblAnn').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ]
+        });
+    });
+</script>

@@ -41,7 +41,7 @@ namespace U_News.Controllers
                                 Session["userid"] = data["userID"].ToString();
                                 Session["typeid"] = data["typeID"].ToString();
                             }
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Announcement");
                         }
                         else
                         {
@@ -121,7 +121,7 @@ namespace U_News.Controllers
                             VALUES (@typeID, @userEmail, @userPW, @userFN, @userLN, @userPhone, @userStatus)";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@typeID", 2); 
+                        cmd.Parameters.AddWithValue("@typeID", 2);
                         cmd.Parameters.AddWithValue("@userEmail", record.Email);
                         cmd.Parameters.AddWithValue("@userPW", Helper.Hash(record.Password));
                         cmd.Parameters.AddWithValue("@userFN", record.FN);
@@ -129,10 +129,13 @@ namespace U_News.Controllers
                         cmd.Parameters.AddWithValue("@userPhone", DBNull.Value);
                         cmd.Parameters.AddWithValue("@userStatus", "Pending");
                         cmd.ExecuteNonQuery();
+
+                        return RedirectToAction("Login");
+
                         record.Types = GetUserTypes();
                         return View(record);
 
-                        return RedirectToAction("Login");
+                        
 
                         
                     }

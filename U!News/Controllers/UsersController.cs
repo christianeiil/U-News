@@ -45,8 +45,6 @@ namespace U_News.Controllers
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem() { Text = "Student", Value = "Student" });
             list.Add(new SelectListItem() { Text = "Administrator", Value = "Administrator" });
-            list.Add(new SelectListItem() { Text = "Blocked", Value = "Blocked" });
-            list.Add(new SelectListItem() { Text = "Archived", Value = "Archived" });
             return list;
         }
 
@@ -199,15 +197,14 @@ namespace U_News.Controllers
                 {
                     query = @"UPDATE users SET typeID=@typeID, userEmail=@userEmail,
                         userFN=@userFN, userLN=@userLN, userPhone=@userPhone,
-                         userStatus=@userStatus
+                         
                         WHERE userID=@userID";
                 }
                 else
                 {
                     query = @"UPDATE users SET typeID=@typeID, userEmail=@userEmail,
                         userPW=@userPW,
-                        userFN=@userFN, userLN=@userLN, userPhone=@userPhone,
-                        userAddress=@userAddress, userStatus=@userStatus
+                        userFN=@userFN, userLN=@userLN, userPhone=@userPhone
                         WHERE userID=@userID";
                 }
 
@@ -219,7 +216,6 @@ namespace U_News.Controllers
                     cmd.Parameters.AddWithValue("@userFN", record.FN);
                     cmd.Parameters.AddWithValue("@userLN", record.LN);
                     cmd.Parameters.AddWithValue("@userPhone", record.Phone);
-                    cmd.Parameters.AddWithValue("@userStatus", record.CurrentStatus);
                     cmd.Parameters.AddWithValue("@userID", record.ID);
                     cmd.ExecuteNonQuery();
                     ViewBag.Message = "<div class='alert alert-success'>Record updated.</div>"; 

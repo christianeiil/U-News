@@ -10,8 +10,13 @@ namespace U_News.Controllers
     {
         public ActionResult Index()
         {
+            int hour = DateTime.Now.Hour; 
+            ViewBag.Message = "Organizing Universities Events and Announcements";
+
             return View();
         }
+
+
 
         public ActionResult About()
         {
